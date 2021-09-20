@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class RouteTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $_SERVER['REQUEST_URI'] = 'This works?';
+
+        parent::setUp();
+    }
+
     public function test_it_should_work(): void
     {
-        $this->assertTrue(true);
+        $this->assertSame('This works?', $_SERVER['REQUEST_URI']);
     }
 }
