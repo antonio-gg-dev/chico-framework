@@ -16,5 +16,22 @@
             "email": "katarn@katarn.es"
         }
     ],
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Chico\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "cs:fix": "./vendor/bin/php-cs-fixer fix",
+        "cs:run": "./vendor/bin/php-cs-fixer fix -v --dry-run --show-progress=none",
+        "psalm": "./vendor/bin/psalm",
+        "test": "./vendor/bin/phpunit",
+        "test:coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html coverage"
+    }
 }
