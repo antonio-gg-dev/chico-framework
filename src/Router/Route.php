@@ -16,6 +16,9 @@ final class Route
     public const METHOD_PUT = 'PUT';
     public const METHOD_TRACE = 'TRACE';
 
+    /** @var string[] */
+    private array $params = [];
+
     /**
      * @param self::METHOD_* $method
      * @param string $path
@@ -56,12 +59,34 @@ final class Route
         $requestUri = (string) $_SERVER['REQUEST_URI'];
         $requestPath = array_values(array_filter(explode('/', parse_url($requestUri, PHP_URL_PATH))));
         $currentPath = array_values(array_filter(explode('/', parse_url($this->path, PHP_URL_PATH))));
-        return $requestPath === $currentPath;
+
+        $requestCount = count($requestPath);
+        $currentCount = count($currentPath);
+
+        if ($requestCount !== $currentCount) {
+            return false;
+        }
+
+        for ($index = 0; $index < $currentCount; $index++) {
+            if (
+                str_starts_with($currentPath[$index], '{') &&
+                str_ends_with($currentPath[$index], '}')
+            ) {
+                $this->params[] = $requestPath[$index];
+
+                unset(
+                    $currentPath[$index],
+                    $requestPath[$index]
+                );
+            }
+        }
+
+        return $currentPath === $requestPath;
     }
 
     public function run(): string
     {
         return (string) (new $this->controller())
-            ->{$this->action}();
+            ->{$this->action}(...$this->params);
     }
 }
