@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
-use Chico\Router\Controller;
 use Chico\Router\Route;
 use Tests\TestCase;
 
@@ -26,13 +25,5 @@ class RouteTest extends TestCase
         $this->expectOutputString('');
 
         Route::get('unexpected/uri', StubController::class, 'stubGetMethod');
-    }
-}
-
-final class StubController implements Controller
-{
-    public function stubGetMethod(): string
-    {
-        return 'Expected Output';
     }
 }
