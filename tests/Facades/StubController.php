@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Router;
+namespace Tests\Facades;
 
 use Chico\Router\Controller;
 

@@ -6,36 +6,62 @@ namespace Chico\Router;
 
 final class Route
 {
+    public const METHOD_CONNECT = 'CONNECT';
+    public const METHOD_DELETE = 'DELETE';
+    public const METHOD_GET = 'GET';
+    public const METHOD_HEAD = 'HEAD';
+    public const METHOD_OPTIONS = 'OPTIONS';
+    public const METHOD_PATCH = 'PATCH';
+    public const METHOD_POST = 'POST';
+    public const METHOD_PUT = 'PUT';
+    public const METHOD_TRACE = 'TRACE';
+
     /**
-     * @param string $uri
+     * @param self::METHOD_* $method
+     * @param string $path
      * @param class-string<Controller> $controller
      * @param callable-string $action
      */
-    public static function get(
-        string $uri,
-        string $controller,
-        string $action
-    ): void {
-        if (self::uriMatches($uri)) {
-            return;
+    public function __construct(
+        private $method,
+        private string $path,
+        private string $controller,
+        private string $action
+    ) {
+    }
+
+    public function requestMatches(): bool
+    {
+        if (!$this->methodMatches()) {
+            return false;
         }
 
-        echo self::getResponse($controller, $action);
+        if (!$this->pathMatches()) {
+            return false;
+        }
+
+        return true;
     }
 
-    private static function uriMatches(string $uri): bool
+    private function methodMatches(): bool
     {
-        return $_SERVER['REQUEST_URI'] !== $uri;
+        $requestMethod = (string) $_SERVER['REQUEST_METHOD'];
+        $currentMethod = $this->method;
+
+        return $requestMethod === $currentMethod;
     }
 
-    /**
-     * @param class-string<Controller> $controller
-     * @param callable-string $action
-     */
-    private static function getResponse(
-        string $controller,
-        string $action
-    ): string {
-        return (string) (new $controller())->{$action}();
+    private function pathMatches(): bool
+    {
+        $requestUri = (string) $_SERVER['REQUEST_URI'];
+        $requestPath = array_values(array_filter(explode('/', parse_url($requestUri, PHP_URL_PATH))));
+        $currentPath = array_values(array_filter(explode('/', parse_url($this->path, PHP_URL_PATH))));
+        return $requestPath === $currentPath;
+    }
+
+    public function run(): string
+    {
+        return (string) (new $this->controller())
+            ->{$this->action}();
     }
 }
