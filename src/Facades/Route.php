@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Chico\Facades;
 
 use Chico\Router\Controller;
+use Chico\Router\Request;
 use Chico\Router\Route as RouteEntity;
 
 final class Route
@@ -20,7 +21,7 @@ final class Route
         string $action
     ): void {
         $route = new RouteEntity(
-            RouteEntity::METHOD_CONNECT,
+            Request::METHOD_CONNECT,
             $path,
             $controller,
             $action
@@ -42,7 +43,7 @@ final class Route
         string $action
     ): void {
         $route = new RouteEntity(
-            RouteEntity::METHOD_DELETE,
+            Request::METHOD_DELETE,
             $path,
             $controller,
             $action
@@ -64,7 +65,7 @@ final class Route
         string $action
     ): void {
         $route = new RouteEntity(
-            RouteEntity::METHOD_GET,
+            Request::METHOD_GET,
             $path,
             $controller,
             $action
@@ -86,7 +87,7 @@ final class Route
         string $action
     ): void {
         $route = new RouteEntity(
-            RouteEntity::METHOD_HEAD,
+            Request::METHOD_HEAD,
             $path,
             $controller,
             $action
@@ -108,7 +109,7 @@ final class Route
         string $action
     ): void {
         $route = new RouteEntity(
-            RouteEntity::METHOD_OPTIONS,
+            Request::METHOD_OPTIONS,
             $path,
             $controller,
             $action
@@ -130,7 +131,7 @@ final class Route
         string $action
     ): void {
         $route = new RouteEntity(
-            RouteEntity::METHOD_PATCH,
+            Request::METHOD_PATCH,
             $path,
             $controller,
             $action
@@ -152,7 +153,7 @@ final class Route
         string $action
     ): void {
         $route = new RouteEntity(
-            RouteEntity::METHOD_POST,
+            Request::METHOD_POST,
             $path,
             $controller,
             $action
@@ -174,7 +175,7 @@ final class Route
         string $action
     ): void {
         $route = new RouteEntity(
-            RouteEntity::METHOD_PUT,
+            Request::METHOD_PUT,
             $path,
             $controller,
             $action
@@ -196,7 +197,7 @@ final class Route
         string $action
     ): void {
         $route = new RouteEntity(
-            RouteEntity::METHOD_TRACE,
+            Request::METHOD_TRACE,
             $path,
             $controller,
             $action
