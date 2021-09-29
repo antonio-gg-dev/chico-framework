@@ -39,7 +39,7 @@ class RouteTest extends TestCase
         Route::post('expected/uri', StubController::class, 'basicAction');
     }
 
-    public function test_it_should_pass_many_param_to_the_action(): void
+    public function test_it_should_pass_many_params_to_the_action(): void
     {
         $_SERVER['REQUEST_URI'] = 'https://example.org/this/works/amazingly';
         $_SERVER['REQUEST_METHOD'] = 'GET';
@@ -49,7 +49,17 @@ class RouteTest extends TestCase
         Route::get('{firstParam}/{secondParam}/{thirdParam}', StubController::class, 'manyParamsAction');
     }
 
-    public function test_it_should_pass_string_params(): void
+    public function test_it_should_pass_associated_params_by_name_to_the_action(): void
+    {
+        $_SERVER['REQUEST_URI'] = 'https://example.org/foo/bar/bazz';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $this->expectOutputString("The params are 'bar', 'foo' and 'bazz'!");
+
+        Route::get('{secondParam}/{firstParam}/{thirdParam}', StubController::class, 'manyParamsAction');
+    }
+
+    public function test_it_should_pass_string_params_to_the_action(): void
     {
         $_SERVER['REQUEST_URI'] = 'https://example.org/expected/string/is/awesome';
         $_SERVER['REQUEST_METHOD'] = 'GET';
@@ -59,32 +69,32 @@ class RouteTest extends TestCase
         Route::get('expected/string/is/{param}', StubController::class, 'stringParamAction');
     }
 
-    public function test_it_should_pass_int_params(): void
+    public function test_it_should_pass_int_params_to_the_action(): void
     {
         $_SERVER['REQUEST_URI'] = 'https://example.org/expected/integer/is/84';
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $this->expectOutputString("The 'integer' param is '84'!");
+        $this->expectOutputString("The 'int' param is '84'!");
 
         Route::get('expected/integer/is/{param}', StubController::class, 'intParamAction');
     }
 
-    public function test_it_should_pass_float_params(): void
+    public function test_it_should_pass_float_params_to_the_action(): void
     {
         $_SERVER['REQUEST_URI'] = 'https://example.org/expected/float/is/8.4';
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $this->expectOutputString("The 'double' param is '8.4'!");
+        $this->expectOutputString("The 'float' param is '8.4'!");
 
         Route::get('expected/float/is/{param}', StubController::class, 'floatParamAction');
     }
 
-    public function test_it_should_pass_bool_params(): void
+    public function test_it_should_pass_bool_params_to_the_action(): void
     {
         $_SERVER['REQUEST_URI'] = 'https://example.org/expected/bool/is/true';
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $this->expectOutputString("The 'boolean' param is 'true'!");
+        $this->expectOutputString("The 'bool' param is 'true'!");
 
         Route::get('expected/bool/is/{param}', StubController::class, 'boolParamAction');
     }

@@ -87,7 +87,7 @@ final class Route
                 'string' => $pathParams[$paramName],
                 'int' => (int) $pathParams[$paramName],
                 'float' => (float) $pathParams[$paramName],
-                'bool' => (bool) $pathParams[$paramName],
+                'bool' => (bool) json_decode($pathParams[$paramName]),
                 null => null,
             };
 

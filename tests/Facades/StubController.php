@@ -15,31 +15,31 @@ final class StubController implements Controller
 
     public function stringParamAction(string $param): string
     {
-        $type = gettype($param);
-        return "The '{$type}' param is '{$param}'!";
+        $type = get_debug_type($param);
+        return "The '$type' param is '$param'!";
     }
 
     public function intParamAction(int $param): string
     {
-        $type = gettype($param);
-        return "The '{$type}' param is '{$param}'!";
+        $type = get_debug_type($param);
+        return "The '$type' param is '$param'!";
     }
 
     public function floatParamAction(float $param): string
     {
-        $type = gettype($param);
-        return "The '{$type}' param is '{$param}'!";
+        $type = get_debug_type($param);
+        return "The '$type' param is '$param'!";
     }
 
     public function boolParamAction(bool $param): string
     {
-        $type = gettype($param);
+        $type = get_debug_type($param);
         $stringParam = json_encode($param);
-        return "The '{$type}' param is '{$stringParam}'!";
+        return "The '$type' param is '$stringParam'!";
     }
 
     public function manyParamsAction(string $firstParam, string $secondParam, string $thirdParam): string
     {
-        return "The params are '{$firstParam}', '{$secondParam}' and '{$thirdParam}'!";
+        return "The params are '$firstParam', '$secondParam' and '$thirdParam'!";
     }
 }
