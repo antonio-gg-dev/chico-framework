@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Chico\Router;
 
+use ReflectionClass;
+use ReflectionNamedType;
+
 final class Route
 {
     /**
@@ -58,10 +61,38 @@ final class Route
     private function getParams(): array
     {
         $params = [];
+        $pathParamKeys = [];
+        $pathParamValues = [];
 
-        preg_match($this->getPathPattern(), Request::path(), $params);
+        preg_match($this->getPathPattern(), '/' . $this->path, $pathParamKeys);
+        preg_match($this->getPathPattern(), Request::path(), $pathParamValues);
 
-        unset($params[0]);
+        unset($pathParamValues[0], $pathParamKeys[0]);
+        $pathParamKeys = array_map(static fn ($key) => trim($key, '{}'), $pathParamKeys);
+
+        $pathParams = array_combine($pathParamKeys, $pathParamValues);
+        $actionParams = (new ReflectionClass($this->controller))
+            ->getMethod($this->action)
+            ->getParameters();
+
+        foreach ($actionParams as $actionParam) {
+            $paramName = $actionParam->getName();
+            $paramType = null;
+
+            if (is_a($actionParam->getType(), ReflectionNamedType::class)) {
+                $paramType = $actionParam->getType()->getName();
+            }
+
+            $value = match ($paramType) {
+                'string' => $pathParams[$paramName],
+                'int' => (int) $pathParams[$paramName],
+                'float' => (float) $pathParams[$paramName],
+                'bool' => (bool) $pathParams[$paramName],
+                null => null,
+            };
+
+            $params[$paramName] = $value;
+        }
 
         return $params;
     }

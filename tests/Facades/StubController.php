@@ -10,21 +10,36 @@ final class StubController implements Controller
 {
     public function basicAction(): string
     {
-        return 'Expected Output';
+        return 'Expected!';
     }
 
-    public function actionWithOneParam(string $param): string
+    public function stringParamAction(string $param): string
     {
-        return "Expected param is: \"{$param}\"";
+        $type = gettype($param);
+        return "The '{$type}' param is '{$param}'!";
     }
 
-    public function actionWithTwoParams(string $firstParams, string $secondParams): string
+    public function intParamAction(int $param): string
     {
-        return "Expected params was: \"{$firstParams}\" and \"{$secondParams}\"";
+        $type = gettype($param);
+        return "The '{$type}' param is '{$param}'!";
     }
 
-    public function actionBookById(int $bookId): string
+    public function floatParamAction(float $param): string
     {
-        return "Book ID is \"{$bookId}\"";
+        $type = gettype($param);
+        return "The '{$type}' param is '{$param}'!";
+    }
+
+    public function boolParamAction(bool $param): string
+    {
+        $type = gettype($param);
+        $stringParam = json_encode($param);
+        return "The '{$type}' param is '{$stringParam}'!";
+    }
+
+    public function manyParamsAction(string $firstParam, string $secondParam, string $thirdParam): string
+    {
+        return "The params are '{$firstParam}', '{$secondParam}' and '{$thirdParam}'!";
     }
 }

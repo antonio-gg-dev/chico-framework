@@ -14,19 +14,19 @@ class RouteTest extends TestCase
         $_SERVER['REQUEST_URI'] = 'https://example.org/expected/uri';
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $this->expectOutputString('Expected Output');
+        $this->expectOutputString('Expected!');
 
         Route::get('expected/uri', StubController::class, 'basicAction');
     }
 
     public function test_it_should_not_respond_if_the_uri_does_not_matches(): void
     {
-        $_SERVER['REQUEST_URI'] = 'https://example.org/other/uri';
+        $_SERVER['REQUEST_URI'] = 'https://example.org/unexpected/uri';
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
         $this->expectOutputString('');
 
-        Route::get('unexpected/uri', StubController::class, 'basicAction');
+        Route::get('other/uri', StubController::class, 'basicAction');
     }
 
     public function test_it_should_not_respond_if_the_method_does_not_matches(): void
@@ -39,33 +39,53 @@ class RouteTest extends TestCase
         Route::post('expected/uri', StubController::class, 'basicAction');
     }
 
-    public function test_it_should_pass_one_param_to_the_action(): void
-    {
-        $_SERVER['REQUEST_URI'] = 'https://example.org/the/expected/param';
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-
-        $this->expectOutputString('Expected param is: "expected"');
-
-        Route::get('the/{param}/param', StubController::class, 'actionWithOneParam');
-    }
-
     public function test_it_should_pass_many_param_to_the_action(): void
     {
-        $_SERVER['REQUEST_URI'] = 'https://example.org/params/are/first/and/second';
+        $_SERVER['REQUEST_URI'] = 'https://example.org/this/works/amazingly';
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $this->expectOutputString('Expected params was: "first" and "second"');
+        $this->expectOutputString("The params are 'this', 'works' and 'amazingly'!");
 
-        Route::get('params/are/{firstParam}/and/{secondParam}', StubController::class, 'actionWithTwoParams');
+        Route::get('{firstParam}/{secondParam}/{thirdParam}', StubController::class, 'manyParamsAction');
     }
 
-    public function test_it_should_pass_one_id_as_param_to_the_action(): void
+    public function test_it_should_pass_string_params(): void
     {
-        $_SERVER['REQUEST_URI'] = 'https://example.org/books/84';
+        $_SERVER['REQUEST_URI'] = 'https://example.org/expected/string/is/awesome';
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $this->expectOutputString('Book IS is: "84"');
+        $this->expectOutputString("The 'string' param is 'awesome'!");
 
-        Route::get('books/{bookId}', StubController::class, 'actionBookById');
+        Route::get('expected/string/is/{param}', StubController::class, 'stringParamAction');
+    }
+
+    public function test_it_should_pass_int_params(): void
+    {
+        $_SERVER['REQUEST_URI'] = 'https://example.org/expected/integer/is/84';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $this->expectOutputString("The 'integer' param is '84'!");
+
+        Route::get('expected/integer/is/{param}', StubController::class, 'intParamAction');
+    }
+
+    public function test_it_should_pass_float_params(): void
+    {
+        $_SERVER['REQUEST_URI'] = 'https://example.org/expected/float/is/8.4';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $this->expectOutputString("The 'double' param is '8.4'!");
+
+        Route::get('expected/float/is/{param}', StubController::class, 'floatParamAction');
+    }
+
+    public function test_it_should_pass_bool_params(): void
+    {
+        $_SERVER['REQUEST_URI'] = 'https://example.org/expected/bool/is/true';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $this->expectOutputString("The 'boolean' param is 'true'!");
+
+        Route::get('expected/bool/is/{param}', StubController::class, 'boolParamAction');
     }
 }
