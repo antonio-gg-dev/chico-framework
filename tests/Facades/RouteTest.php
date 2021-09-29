@@ -5,11 +5,19 @@ declare(strict_types=1);
 namespace Tests\Facades;
 
 use Chico\Facades\Route;
+use Chico\Router\Route as RouteEntity;
 use Generator;
 use Tests\TestCase;
 
 class RouteTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        RouteEntity::reset();
+
+        parent::setUp();
+    }
+
     public function test_it_should_respond_if_everything_matches(): void
     {
         $_SERVER['REQUEST_URI'] = 'https://example.org/expected/uri';
@@ -133,5 +141,16 @@ class RouteTest extends TestCase
         yield 'false' => ['given' => 'false', 'expected' => 'false'];
         yield '1' => ['given' => '1', 'expected' => 'true'];
         yield '0' => ['given' => '0', 'expected' => 'false'];
+    }
+
+    public function test_it_should_respond_only_the_first_match(): void
+    {
+        $_SERVER['REQUEST_URI'] = 'https://example.org/expected/uri';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $this->expectOutputString('Expected!');
+
+        Route::get('expected/uri', StubController::class, 'basicAction');
+        Route::get('expected/{param}', StubController::class, 'stringParamAction');
     }
 }

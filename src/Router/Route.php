@@ -9,6 +9,8 @@ use ReflectionNamedType;
 
 final class Route
 {
+    private static bool $isResponded = false;
+
     /**
      * @param Request::METHOD_* $method
      * @param string $path
@@ -25,6 +27,10 @@ final class Route
 
     public function requestMatches(): bool
     {
+        if (self::$isResponded) {
+            return false;
+        }
+
         if (!$this->methodMatches()) {
             return false;
         }
@@ -54,6 +60,8 @@ final class Route
 
     public function run(): string
     {
+        self::$isResponded = true;
+
         return (string) (new $this->controller())
             ->{$this->action}(...$this->getParams());
     }
@@ -95,5 +103,13 @@ final class Route
         }
 
         return $params;
+    }
+
+    /**
+     * Warning! This method is only for testing purposes.
+     */
+    public static function reset(): void
+    {
+        self::$isResponded = false;
     }
 }
