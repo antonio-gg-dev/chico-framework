@@ -13,7 +13,6 @@ final class Route
 
     /**
      * @param Request::METHOD_* $method
-     * @param string $path
      * @param class-string<Controller> $controller
      * @param callable-string $action
      */
@@ -105,9 +104,7 @@ final class Route
         return $params;
     }
 
-    /**
-     * Warning! This method is only for testing purposes.
-     */
+    /** NOTE: Warning! This method is only for testing purposes. */
     public static function reset(): void
     {
         self::$isResponded = false;

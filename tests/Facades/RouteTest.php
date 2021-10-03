@@ -6,16 +6,19 @@ namespace Tests\Facades;
 
 use Chico\Facades\Route;
 use Chico\Router\Route as RouteEntity;
+use Faker\Factory;
 use Generator;
 use Tests\TestCase;
 
 class RouteTest extends TestCase
 {
-    protected function setUp(): void
+    private const PROVIDER_TRIES = 10;
+
+    protected function tearDown(): void
     {
         RouteEntity::reset();
 
-        parent::setUp();
+        parent::tearDown();
     }
 
     public function test_it_should_respond_if_everything_matches(): void
@@ -50,20 +53,28 @@ class RouteTest extends TestCase
 
     public function test_it_should_pass_many_params_to_the_action(): void
     {
-        $_SERVER['REQUEST_URI'] = 'https://example.org/this/works/amazingly';
+        $faker = Factory::create();
+        /** @var string[] $params */
+        $params = $faker->unique->words(3);
+
+        $_SERVER['REQUEST_URI'] = "https://example.org/$params[0]/$params[1]/$params[2]";
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $this->expectOutputString("The params are 'this', 'works' and 'amazingly'!");
+        $this->expectOutputString("The params are '$params[0]', '$params[1]' and '$params[2]'!");
 
         Route::get('{firstParam}/{secondParam}/{thirdParam}', StubController::class, 'manyParamsAction');
     }
 
     public function test_it_should_pass_associated_params_by_name_to_the_action(): void
     {
-        $_SERVER['REQUEST_URI'] = 'https://example.org/foo/bar/buzz';
+        $faker = Factory::create();
+        /** @var string[] $params */
+        $params = $faker->unique->words(3);
+
+        $_SERVER['REQUEST_URI'] = "https://example.org/$params[0]/$params[1]/$params[2]";
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $this->expectOutputString("The params are 'bar', 'foo' and 'buzz'!");
+        $this->expectOutputString("The params are '$params[1]', '$params[0]' and '$params[2]'!");
 
         Route::get('{secondParam}/{firstParam}/{thirdParam}', StubController::class, 'manyParamsAction');
     }
@@ -81,9 +92,12 @@ class RouteTest extends TestCase
 
     public function stringProvider(): Generator
     {
-        yield 'foo' => ['string' => 'foo'];
-        yield 'bar' => ['string' => 'bar'];
-        yield 'buzz' => ['string' => 'buzz'];
+        $faker =  Factory::create();
+
+        for ($try = 0; $try < self::PROVIDER_TRIES; $try++) {
+            $randomString = (string) $faker->unique()->word();
+            yield $randomString => ['string' => $randomString];
+        }
     }
 
     /** @dataProvider intProvider */
@@ -99,27 +113,31 @@ class RouteTest extends TestCase
 
     public function intProvider(): Generator
     {
-        for ($try = 0; $try < 10; $try++) {
-            $randomInt = (string) mt_rand();
+        $faker =  Factory::create();
+
+        for ($try = 0; $try < self::PROVIDER_TRIES; $try++) {
+            $randomInt = (string) $faker->unique()->randomNumber();
             yield "#$randomInt" => ['int' => $randomInt];
         }
     }
 
     /** @dataProvider floatProvider */
-    public function test_it_should_pass_float_params_to_the_action(): void
+    public function test_it_should_pass_float_params_to_the_action(string $float): void
     {
-        $_SERVER['REQUEST_URI'] = 'https://example.org/expected/float/is/8.4';
+        $_SERVER['REQUEST_URI'] = "https://example.org/expected/float/is/$float";
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $this->expectOutputString("The 'float' param is '8.4'!");
+        $this->expectOutputString("The 'float' param is '$float'!");
 
         Route::get('expected/float/is/{param}', StubController::class, 'floatParamAction');
     }
 
     public function floatProvider(): Generator
     {
-        for ($try = 0; $try < 10; $try++) {
-            $randomFloat = (string) (mt_rand() / mt_rand(1, 133746));
+        $faker =  Factory::create();
+
+        for ($try = 0; $try < self::PROVIDER_TRIES; $try++) {
+            $randomFloat = (string) $faker->unique()->randomFloat();
             yield "#$randomFloat" => ['float' => $randomFloat];
         }
     }

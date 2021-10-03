@@ -11,7 +11,6 @@ use Chico\Router\Route as RouteEntity;
 final class Route
 {
     /**
-     * @param string $path
      * @param class-string<Controller> $controller
      * @param callable-string $action
      */
@@ -33,7 +32,6 @@ final class Route
     }
 
     /**
-     * @param string $path
      * @param class-string<Controller> $controller
      * @param callable-string $action
      */
@@ -55,7 +53,6 @@ final class Route
     }
 
     /**
-     * @param string $path
      * @param class-string<Controller> $controller
      * @param callable-string $action
      */
@@ -77,7 +74,6 @@ final class Route
     }
 
     /**
-     * @param string $path
      * @param class-string<Controller> $controller
      * @param callable-string $action
      */
@@ -99,7 +95,6 @@ final class Route
     }
 
     /**
-     * @param string $path
      * @param class-string<Controller> $controller
      * @param callable-string $action
      */
@@ -121,7 +116,6 @@ final class Route
     }
 
     /**
-     * @param string $path
      * @param class-string<Controller> $controller
      * @param callable-string $action
      */
@@ -143,7 +137,6 @@ final class Route
     }
 
     /**
-     * @param string $path
      * @param class-string<Controller> $controller
      * @param callable-string $action
      */
@@ -165,7 +158,6 @@ final class Route
     }
 
     /**
-     * @param string $path
      * @param class-string<Controller> $controller
      * @param callable-string $action
      */
@@ -187,7 +179,6 @@ final class Route
     }
 
     /**
-     * @param string $path
      * @param class-string<Controller> $controller
      * @param callable-string $action
      */

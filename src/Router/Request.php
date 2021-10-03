@@ -25,7 +25,7 @@ final class Request
 
     public static function path(): string
     {
-        return parse_url(
+        return (string) parse_url(
             (string) $_SERVER['REQUEST_URI'],
             PHP_URL_PATH
         );
