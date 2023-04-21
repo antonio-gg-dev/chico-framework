@@ -1,10 +1,15 @@
 # Chico Framework
 
-## WIP
+## Archived
 
-This project is work in progress, is incomplete and may change sharply.
+This project has been archived since its functionalities have been absorbed by
+[Gacela Project](https://github.com/gacela-project), specifically by its
+[Router module](https://github.com/gacela-project/router).
 
-As long as I don't remove this ad, it will remain at this status, there's also no guarantee that I will finish it.
+I am actively participating in this project so there is no point in maintaining two projects that pursue similar goals.
+
+Of course, Gacela has active support and new features and improvements are being continuously added. I can only
+recommend reading its documentation and venturing to use it.
 
 ## About
 
@@ -36,21 +41,6 @@ What I usually look in a framework are mainly these things and this is my progre
 - [x] Router
 - [ ] Dependency Resolver
 - [ ] Boilerplate
-
-## Using
-
-If you decide to use Chico in your projects, I would like you to know that as a personal project I don't seek to give
-it stability or support to other people needs.
-
-If you really want to use it, it may be recommended that you fork and work on your own repository, so the sudden changes
-that I can make will not affect you.
-
-## Contributing
-
-If you want to contribute, keep in mind that it's designed under my criteria and to solve my own needs.
-
-Still you are free to create as many issues and pull requests as you want, I will be happy to review your requests,
-suggestions and changes. It could be a good opportunity for us to learn something new!
 
 ## License
 
